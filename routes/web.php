@@ -37,3 +37,7 @@ Route::get('/user__paste', function () {
 Route::get('/user__paste/report', function () {
     return view('report');
 });
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
