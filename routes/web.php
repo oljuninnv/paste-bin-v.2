@@ -14,5 +14,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('paste');
+});
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/register', function () {
+    return view('registration');
+});
+
+Route::get('/archive', function () {
+    return view('pastes');
+});
+Route::get('/mypaste', function () {
+    return view('mypaste');
+});
+Route::get('/user__paste', function () {
+    return view('user__paste');
+});
+
+Route::get('/user__paste/report', function () {
+    return view('report');
 });
