@@ -60,15 +60,39 @@
         </div>
         <div>
             <div>
-                <a href="#"><h2 class="text-[20px]">My pastes</h2></a>
+                <a href="{{ route("personal_pastes") }}"><h2 class="text-[20px]">My pastes</h2></a>
                 <div>
                     {{-- Здесь будут пасты пользователя --}}
+                    @if(empty($user_pastes) || !Auth::check())
+                        <p>У вас пока нет паст.</p>
+                    @else
+                        <ul>
+                            @foreach($user_pastes as $user_paste)
+                                <li>
+                                    <strong>{{ $user_paste->title }}</strong> - 
+                                    <small>{{ $user_paste->created_at->format('d.m.Y H:i') }}</small>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
             <div>
-                <a href="#"><h2 class="text-[20px]">Public pastes</h2></a>
+                <a href="{{route('archive') }}"><h2 class="text-[20px]">Public pastes</h2></a>
                 <div>
                     {{-- Здесь будут публичные пасты --}}
+                    @if($pastes->isEmpty())
+                        <p>Нет доступных паст.</p>
+                    @else
+                        <ul>
+                            @foreach($pastes as $paste)
+                                <li>
+                                    <strong>{{ $paste->title }}</strong> - 
+                                    <small>{{ $paste->created_at->format('d.m.Y H:i') }}</small>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>

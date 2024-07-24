@@ -6,8 +6,8 @@
         <div class="flex gap-5 items-center">
             <a href="#">API</a>
             <a href="{{route('home') }}" class="bg-green-600 p-[3px] rounded-md">+ Paste</a>
-            <form action="" method="get" class="flex gap-[5px]">
-                <input type="text" name="" id="">
+            <form action="{{ route('search') }}" method="get" class="flex gap-[5px]">
+                <input type="text" name="search" id="" class="text-black" placeholder="Введите название...">
                 <button type="submit" class="bg-white p-[3px] rounded-md text-black">Поиск</button>
             </form>
         </div>

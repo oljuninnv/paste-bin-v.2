@@ -13,6 +13,8 @@ class Paste extends Model
     use HasFactory;
 
     protected $table = 'pastes';
+
+    protected $dates = ['access_time'];
     protected $fillable = [
         'user_id',
         'title',
