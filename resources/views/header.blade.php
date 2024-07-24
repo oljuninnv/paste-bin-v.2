@@ -12,7 +12,22 @@
             </form>
         </div>
         <div>
-            Авторизация
+            <nav>
+                <ul class="flex gap-[10px]">
+                    @if(Auth::check())
+                        <li>Welcome, {{ Auth::user()->name }}</li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                        <li><a href="{{ route('register') }}">Register</a></li>
+                    @endif
+                </ul>
+            </nav>
         </div>
     </div>   
 </header>

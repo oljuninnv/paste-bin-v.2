@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CustomLoginController;
+use App\Http\Controllers\CustomRegistrationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('paste');
 });
-Route::get('/login', function () {
-    return view('login');
-});
 
-Route::get('/register', function () {
-    return view('registration');
-});
+Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
+Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [CustomLoginController::class, 'login'])->name('auth');
+
+Route::get('/register', function () {return view('registration');});
+Route::post('/register', [CustomRegistrationController::class, 'register'])->name('register');
 
 Route::get('/archive', function () {
     return view('pastes');
