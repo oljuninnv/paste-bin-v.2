@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomLoginController;
 use App\Http\Controllers\CustomRegistrationController;
+use App\Http\Controllers\PasteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,9 +16,9 @@ use App\Http\Controllers\CustomRegistrationController;
 |
 */
 
-Route::get('/', function () {
-    return view('paste');
-});
+
+Route::get('/',[PasteController::class,'index']) -> name('home');
+Route::post('/', [PasteController::class, 'store'])->name('store');
 
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');

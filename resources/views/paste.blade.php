@@ -3,25 +3,59 @@
 @section('content')
     <div class="flex justify-around">
         <div>
-            <form action="" method="POST" class="flex flex-col gap-[10px] w-[100%]">
+            <form action="{{ route('store') }}" method="POST" class="flex flex-col gap-[10px] w-[100%]">
+                @csrf
                 <h2 class="text-[20px]">New Paste</h2>
-                <textarea id="paste" class="w-[1000px] h-[300px] border-2"></textarea>
+                <textarea id="paste" name="content" class="w-[1000px] h-[300px] border-2" required></textarea>
+                
                 <h2 class="text-[20px]">Optional Paste Settings</h2>
                 <hr class="border-black">
-                <label >Категория<select name="" id="" class="w-[100%] border-solid border-2 ">
-                    {{-- Код для вывода списка категорий     --}}
-                </select></label>
-                <label >Теги<input type="text" name="" class="w-[100%] border-solid border-2">
-                </input></label>
-                <label >Синтаксис<select name="" id="" class="w-[100%] border-solid border-2 ">
-                    {{-- Код для вывода списка синтаксисов     --}}
-                </select></label>
-                <label >Права доступа<select name="" id="" class="w-[100%] border-solid border-2 ">
-                    {{-- Код для вывода прав для доступа     --}}
-                </select></label>
-                <label >Название пасты<input type="text" name="" class="w-[100%] border-solid border-2">
-                </input></label>
-                <button type="submit bg-slate-300 p-[5px] rounded-md">Создать пасту</button>
+            
+                <label>Категория
+                    <select name="category_id" id="category_id" class="w-[100%] border-solid border-2" required>
+                        {{-- Здесь должен быть код для вывода списка категорий --}}
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </label>
+            
+                <label>Время существования пасты
+                    <select name="access_time" id="access_time" class="w-[100%] border-solid border-2">
+                        
+                        @foreach($access_times as $access_time)
+                            <option value="{{ $access_time->id }}">{{ $access_time->name }}</option>
+                        @endforeach
+                    </select>
+                </label>
+            
+                <label>Теги
+                    <input type="text" name="tags" class="w-[100%] border-solid border-2" placeholder="Введите теги через запятую">
+                </label>
+            
+                <label>Синтаксис
+                    <select name="syntax_id" id="syntax_id" class="w-[100%] border-solid border-2" required>
+                        {{-- Здесь должен быть код для вывода списка синтаксисов --}}
+                        @foreach($syntaxes as $syntax)
+                            <option value="{{ $syntax->id }}">{{ $syntax->name }}</option>
+                        @endforeach
+                    </select>
+                </label>
+            
+                <label>Права доступа
+                    <select name="rights_id" id="rights_id" class="w-[100%] border-solid border-2" required>
+                        {{-- Здесь должен быть код для вывода прав доступа --}}
+                        @foreach($rights as $right)
+                            <option value="{{ $right->id }}">{{ $right->name }}</option>
+                        @endforeach
+                    </select>
+                </label>
+            
+                <label>Название пасты
+                    <input type="text" name="title" class="w-[100%] border-solid border-2" required>
+                </label>
+            
+                <button type="submit" class="bg-slate-300 p-[5px] rounded-md">Создать пасту</button>
             </form>
         </div>
         <div>
