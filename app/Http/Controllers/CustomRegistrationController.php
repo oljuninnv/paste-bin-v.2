@@ -31,6 +31,7 @@ class CustomRegistrationController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password), // Хеширование пароля
+            'banned' => 0
         ]);
 
         // Аутентификация нового пользователя
