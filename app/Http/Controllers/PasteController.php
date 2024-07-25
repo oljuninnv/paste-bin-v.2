@@ -16,26 +16,23 @@ class PasteController extends Controller
 {
     public function index()
     {
-        // Получаем текущего аутентифицированного пользователя
+
         $user = Auth::user();
 
-        // Получаем последние 10 паст, соответствующих условиям
-        $pastesQuery = Paste::where('rights_id', 1) // Пасты с rights_id = 1
+        $pastesQuery = Paste::where('rights_id', 1)
             ->where(function($query) {
-                $query->where('access_time', '<', now()) // Текущая дата > access_time
-                    ->orWhereNull('access_time'); // Или access_time = null
+                $query->where('access_time', '<', now()) 
+                    ->orWhereNull('access_time');
             });
 
-        // Если пользователь аутентифицирован, добавляем условие по user_id
         if ($user) {
-            $pastesQuery->where('user_id', '!=', $user->id); // Пасты не созданные пользователем
+            $pastesQuery->where('user_id', '!=', $user->id); 
         }
 
-        $pastes = $pastesQuery->orderBy('created_at', 'desc') // Сортировка по дате создания
-            ->take(10) // Ограничение до 10 штук
+        $pastes = $pastesQuery->orderBy('created_at', 'desc') 
+            ->take(10) 
             ->get();
 
-        // Получаем последние 10 паст пользователя, если он аутентифицирован
         $user_pastes = [];
         if ($user) {
             $user_pastes = Paste::where('user_id', $user->id)

@@ -1,3 +1,4 @@
+{{-- Страница поиска паст --}}
 @extends('layout') 
 
 @section('content')

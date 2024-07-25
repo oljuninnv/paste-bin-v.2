@@ -1,3 +1,4 @@
+{{-- Страница проссмотра пасты --}}
 @extends('layout')
 
 @section('content')

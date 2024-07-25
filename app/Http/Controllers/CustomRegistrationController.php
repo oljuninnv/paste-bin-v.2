@@ -11,7 +11,6 @@ class CustomRegistrationController extends Controller
 {
     public function register(Request $request)
     {
-        // Кастомные сообщения валидации
         $messages = [
             'name.required' => 'Поле имени пользователя обязательно для заполнения.',
             'email.required' => 'Поле email обязательно для заполнения.',
@@ -20,14 +19,13 @@ class CustomRegistrationController extends Controller
             'password.min' => 'Пароль должен содержать минимум 8 символов.',
         ];
 
-        // Валидация данных регистрации
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
         ], $messages);
 
-        // Создание нового пользователя
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -36,10 +34,8 @@ class CustomRegistrationController extends Controller
             'banned' => 0
         ]);
 
-        // Аутентификация нового пользователя
         Auth::login($user);
 
-        // Перенаправление на главную страницу после успешной регистрации
         return redirect('/');
     }
 }

@@ -1,3 +1,5 @@
+{{-- Шаблон header'а --}}
+
 <header class="h-[50px] w-[100%] m-0 p-0 bg-[#023859] text-white">
     <div class="max-w-[1340px] m-auto flex h-[100%] justify-between items-center">
         <a href="{{route('home') }}">

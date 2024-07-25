@@ -11,27 +11,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
-{
-    public function banUser($id)
+{   
+    public function banUser($id) // Добавление пользователя в бан
     {
-        // // Проверка, является ли текущий пользователь администратором
+        /* 
+        Проверка, является ли текущий пользователь администратором
         if (!Auth::user() || !Auth::user()->is_admin) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
+        */
 
-        // Поиск пользователя по ID
         $user = User::find($id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        // Установка статуса заблокированного
+        // Установка статуса бана
         $user->banned = 1;
         $user->save();
 
         return response()->json(['message' => 'User banned successfully']);
     }
+    
     public function register(Request $request)
     {
         $request->validate([
@@ -57,39 +59,33 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
-       // Валидация входных данных
-    $request->validate([
-        'email' => 'required|string',
-        'password' => 'required|string',
-    ]);
 
-    // Пытаемся аутентифицировать пользователя
-    if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-        $user = Auth::user();
-
-        // Проверка на заблокированного пользователя
-        if ($user->banned == 1) {
-            // Если пользователь заблокирован, выполняем выход и возвращаем сообщение
-            Auth::logout();
-            return response()->json(['message' => "You're banned."], 403); // Код 403 Forbidden
-        }
-
-        // Если пользователь не заблокирован, создаем токен
-        $token = $user->createToken('User Token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-            'message' => 'Login successful'
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
         ]);
-    } else {
-        return response()->json(['message' => 'Login failed or user not found'], 401);
-    }
-    }
 
-    public function getUsers(Request $request)
-    {
-        return User::all();
+    
+        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            $user = Auth::user();
+
+            if ($user->banned == 1) {
+                Auth::logout();
+                return response()->json(['message' => "You're banned."], 403); 
+            }
+
+            // Если пользователь не заблокирован, создаем токен
+            $token = $user->createToken('User Token')->plainTextToken;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+                'message' => 'Login successful'
+            ]);
+
+        } else {
+            return response()->json(['message' => 'Login failed or user not found'], 401);
+        }
     }
 
     public function getUser($id)
@@ -103,7 +99,7 @@ class ApiController extends Controller
         return response()->json($user);
     }
 
-    public function index()
+    public function index() //Вывод всех пользователей
     {
         return response()->json(User::all());
     }
@@ -130,26 +126,27 @@ class ApiController extends Controller
     }
 
     public function deletePaste($short_url)
-{
-    // Получаем текущего аутентифицированного пользователя
-    // $user = auth()->user();
+    {
+        // Получаем текущего аутентифицированного пользователя
+        // $user = auth()->user();
 
-    // Находим пасту по ссылке
-    $paste = Paste::where('short_url', $short_url)->first();
+        $paste = Paste::where('short_url', $short_url)->first();
 
-    // Проверяем, существует ли паста
-    if (!$paste) {
-        return response()->json(['message' => 'Paste not found'], 404);
-    }
+        if (!$paste) {
+            return response()->json(['message' => 'Paste not found'], 404);
+        }
 
-    // Проверяем, является ли пользователь администратором или владельцем пасты
-    // if ($user->role === 'admin' || $paste->user_id === $user->id) {
-        // Удаляем пасту
         $paste->delete();
         return response()->json(['message' => 'Paste deleted successfully'], 200);
-    // }
 
-    // Если пользователь не имеет прав на удаление
-    // return response()->json(['message' => 'Unauthorized'], 403);
-}
+        // Проверяем, является ли пользователь администратором или владельцем пасты
+        // if ($user->role === 'admin' || $paste->user_id === $user->id) {
+            // Удаляем пасту
+            // $paste->delete();
+            // return response()->json(['message' => 'Paste deleted successfully'], 200);
+        // }
+
+        // Если пользователь не имеет прав на удаление
+        // return response()->json(['message' => 'Unauthorized'], 403);
+    }
 }

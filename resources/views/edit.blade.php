@@ -1,3 +1,5 @@
+{{-- Шаблон редактирования пасты --}}
+
 @extends('layout')
 
 @section('content')
