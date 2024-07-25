@@ -22,7 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/user', [ApiController::class, 'index']);
 Route::get('/pastes', [ApiController::class, 'GetPasteList']);
 Route::get('/paste/{short_url}', [ApiController::class, 'getPaste']);
-Route::delete('delete/paste/{short_url}', [ApiController::class, 'deletePaste'])->middleware('auth:sanctum');
+Route::delete('delete/paste/{short_url}', [ApiController::class, 'deletePaste']);
+Route::post('/ban-user/{id}', [ApiController::class, 'banUser']);
 Route::get('/complaints', [ApiController::class, 'GetComplaintList']);
 Route::get('/user/{id}', [ApiController::class, 'getUser']);
 Route::post('/register', [ApiController::class, 'register']);

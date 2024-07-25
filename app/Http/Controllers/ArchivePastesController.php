@@ -73,12 +73,12 @@ class ArchivePastesController extends Controller
         $pastesQuery->where('user_id','=',$user->id); // Пасты, созданные пользователем
     
         $pastes = $pastesQuery->orderBy('created_at', 'desc')->get();
-        
+
         $syntaxes = Syntax::all();
         $categories = Category::all(); // Получаем все категории
         $rights = Rights::all(); // Получение всех прав
     
-        return view('mypaste', compact('pastes', 'syntaxes', 'categories', 'rights')); // Передаем данные в представление
+        return view('mypaste', compact('pastes', 'syntaxes', 'categories', 'rights','user')); // Передаем данные в представление
     }
 
     public function personal_paste(request $request,$short_url)

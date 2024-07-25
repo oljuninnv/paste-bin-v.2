@@ -1,6 +1,9 @@
 @extends('layout')
 
 @section('content')
+    @if(Auth::check())
+    <h2>Мой токен:{{$user->remember_token}}</h2>
+    @endif
     <h2 class="text-[30px] ">Мои пасты</h2>
     <table class="w-[1200px] align-middle text-center border">
         <thead class="border">

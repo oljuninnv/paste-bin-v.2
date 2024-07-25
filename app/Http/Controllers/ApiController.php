@@ -12,6 +12,26 @@ use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
 {
+    public function banUser($id)
+    {
+        // // Проверка, является ли текущий пользователь администратором
+        if (!Auth::user() || !Auth::user()->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Поиск пользователя по ID
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Установка статуса заблокированного
+        $user->banned = 1;
+        $user->save();
+
+        return response()->json(['message' => 'User banned successfully']);
+    }
     public function register(Request $request)
     {
         $request->validate([
@@ -112,7 +132,7 @@ class ApiController extends Controller
     public function deletePaste($short_url)
 {
     // Получаем текущего аутентифицированного пользователя
-    $user = auth()->user();
+    // $user = auth()->user();
 
     // Находим пасту по ссылке
     $paste = Paste::where('short_url', $short_url)->first();
@@ -123,13 +143,13 @@ class ApiController extends Controller
     }
 
     // Проверяем, является ли пользователь администратором или владельцем пасты
-    if ($user->role === 'admin' || $paste->user_id === $user->id) {
+    // if ($user->role === 'admin' || $paste->user_id === $user->id) {
         // Удаляем пасту
         $paste->delete();
         return response()->json(['message' => 'Paste deleted successfully'], 200);
-    }
+    // }
 
     // Если пользователь не имеет прав на удаление
-    return response()->json(['message' => 'Unauthorized'], 403);
+    // return response()->json(['message' => 'Unauthorized'], 403);
 }
 }

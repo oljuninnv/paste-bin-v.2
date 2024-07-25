@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User; 
+use Illuminate\Support\Str;
 
 class CustomRegistrationController extends Controller
 {
@@ -30,7 +31,8 @@ class CustomRegistrationController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password), // Хеширование пароля
+            'password' => bcrypt($request->password), // Хеширование пароля            
+            'remember_token' => Str::random(50),
             'banned' => 0
         ]);
 
