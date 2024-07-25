@@ -15,10 +15,6 @@ use App\Models\access_time;
 class ArchivePastesController extends Controller
 {
 
-    public function syntax()
-    {
-        return $this->belongsTo(Syntax::class, 'syntax_id'); // Убедитесь, что здесь указан правильный внешний ключ
-    }
     public function index (request $request){
 
         // Получаем текущего аутентифицированного пользователя
@@ -62,23 +58,24 @@ class ArchivePastesController extends Controller
             // Если пользователь не авторизован, можно вернуть пустое представление или редиректить
             return view('mypaste', ['pastes' => [], 'syntaxes' => [], 'categories' => [], 'rights' => []]);
         }
-    
-        // Получаем последние 10 паст, соответствующих условиям
+
+        // Получаем пасты, соответствующие условиям
         $pastesQuery = Paste::where(function($query) {
             $query->where('access_time', '<', now()) // Текущая дата > access_time
-                  ->orWhereNull('access_time'); // Или access_time = null
+                ->orWhereNull('access_time'); // Или access_time = null
         });
-    
+
         // Добавляем условие по user_id для аутентифицированного пользователя
-        $pastesQuery->where('user_id','=',$user->id); // Пасты, созданные пользователем
-    
-        $pastes = $pastesQuery->orderBy('created_at', 'desc')->get();
+        $pastesQuery->where('user_id', '=', $user->id); // Пасты, созданные пользователем
+
+        // Пагинация: получаем пасты с пагинацией по 10 элементов
+        $pastes = $pastesQuery->orderBy('created_at', 'desc')->paginate(10);
 
         $syntaxes = Syntax::all();
-        $categories = Category::all(); // Получаем все категории
-        $rights = Rights::all(); // Получение всех прав
-    
-        return view('mypaste', compact('pastes', 'syntaxes', 'categories', 'rights','user')); // Передаем данные в представление
+        $categories = Category::all(); 
+        $rights = Rights::all(); 
+
+        return view('mypaste', compact('pastes', 'syntaxes', 'categories', 'rights', 'user'));
     }
 
     public function personal_paste(request $request,$short_url)

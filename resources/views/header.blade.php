@@ -6,7 +6,7 @@
             <span class="h-[100%] text-[45px] ">PASTEBIN</span>
         </a>
         <div class="flex gap-5 items-center">
-            <a href="#">API</a>
+            <a href="/api">API</a>
             <a href="{{route('home') }}" class="bg-green-600 p-[3px] rounded-md">+ Paste</a>
             <form action="{{ route('search') }}" method="get" class="flex gap-[5px]">
                 <input type="text" name="search" id="" class="text-black" placeholder="Введите название...">

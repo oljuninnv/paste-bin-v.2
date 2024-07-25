@@ -14,7 +14,7 @@ use App\Models\access_time;
 
 class PasteController extends Controller
 {
-    public function index()
+    public function index()// Заполнение формы по созданию пасты
     {
 
         $user = Auth::user();
@@ -49,7 +49,7 @@ class PasteController extends Controller
         return view('paste', compact('categories', 'syntaxes', 'rights', 'access_times', 'user_pastes', 'pastes'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request) // Отправка данных с формы пасты
     {
         // Валидация входящих данных
         $request->validate([
@@ -77,18 +77,12 @@ class PasteController extends Controller
             $paste->access_time = null; // Если не нашли duration, оставляем пустым
          }
         
-
         $paste->tags = $request->input('tags');
         $paste->syntax_id = $request->input('syntax_id');
         $paste->rights_id = $request->input('rights_id');
         $paste->title = $request->input('title');
 
-        // Проверка авторизации и значения чекбокса "guest"
-        if (!Auth::check() || $request->has('guest')) {
-            $paste->user_id = null; // Оставить поле пустым
-        } else {
-            $paste->user_id = Auth::id(); // Добавить ID авторизованного пользователя
-        }
+        $paste->user_id = Auth::id();
 
         do {
             $shortUrl = Str::random(15);

@@ -59,6 +59,12 @@ Route::put('/paste/{id}', [EditPaste::class, 'update'])->name('paste.update')->m
 // Форма поиска
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
+// Информация об api
+Route::get('/api', function () {
+    return view('api');
+});
+
+
 // Админ панель
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

@@ -3,7 +3,7 @@
 
 @section('content')
     <h2 class="text-[30px] ">Публичные пасты</h2>
-    <table class="w-[1000px] align-middle text-center border">
+    <table class="w-[1300px] align-middle text-center border">
         <thead class="border">
             <tr>
                 <th class="border w-[500px]">Название</th>
